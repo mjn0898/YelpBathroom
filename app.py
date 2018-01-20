@@ -3,11 +3,18 @@ from flask import Flask, flash, redirect, render_template, request, session, abo
 import os
 import firebase_admin
 from firebase_admin import credentials
+from firebase_admin import db
 
 cred = credentials.Certificate('firebase/yelpbathroom-firebase-adminsdk-6s9i6-cab4574a75.json')
-default_app = firebase_admin.initialize_app(cred)
+default_app = firebase_admin.initialize_app(cred, {
+    'databaseURL' : 'https://yelpbathroom.firebaseio.com/'
+})
 
 app = Flask(__name__)
+
+ref = db.reference()
+
+#database = firebase.database()
 
 @app.route('/')
 def home():
@@ -23,6 +30,21 @@ def do_admin_login():
     else:
         flash('wrong password!')
     return home()
+
+@app.route('/create', methods=['GET'])
+def create():
+    entries_ref = ref.child('entries')
+    new_entry = entries_ref.push({
+        'title' : request.args.get('title'),
+        'description' : request.args.get('desc')
+    })
+    return list()
+
+def list():
+    result = ref.child('entries').get()
+    for i in result:
+        print i
+    return "list"
 
 if __name__ == "__main__":
     app.secret_key = os.urandom(12)
