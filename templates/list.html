@@ -1,0 +1,14 @@
+<html>
+  <body>
+    <table border=2>
+      <th>Title</th>
+      <th>Description</th>
+      {% for i in info %}
+      <tr>
+	<td>{{ i.title }}</td>
+
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>

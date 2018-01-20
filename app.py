@@ -41,10 +41,12 @@ def create():
     return list()
 
 def list():
-    result = ref.child('entries').get()
-    for i in result:
-        print i
-    return "list"
+    result = ref.child('entries').order_by_key().get()
+    for i in result.each():
+        print i.val()
+    return render_template('list.html', info=result);
+#    return "list"
+
 
 if __name__ == "__main__":
     app.secret_key = os.urandom(12)
