@@ -28,26 +28,17 @@
     }
 </style>
 
-<head>
-  <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
-  <script>
-    // Initialize Firebase
-    var config = {
-    apiKey: "AIzaSyAD33aJqtms3_DV30NlfIjkML0NHl96bHY",
-    authDomain: "yelpbathroom.firebaseapp.com",
-    databaseURL: "https://yelpbathroom.firebaseio.com",
-    projectId: "yelpbathroom",
-    storageBucket: "",
-    messagingSenderId: "618730258550"
-    };
-    firebase.initializeApp(config);
-  </script>
-</head>
 <body>
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
   <h6>Create a listing:</h6>
   <br />
-  <form action="/createlisting", method="GET" id="createListingForm">
+  <div id="check-existing">
+    <form action="/list">
+      <input type="submit" value="Check Current Listings" />
+    </form>
+  </div>
+  <br />
+  <form action="/create", method="POST" id="createListingForm">
     <input type="text" name="title" placeholder="Enter Title"> <br />
     <div class="stars">
       <input class="star star-5" id="star-5" type="radio" name="star" />

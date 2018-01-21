@@ -1,7 +1,8 @@
 from flask import Flask
-from flask import Flask, flash, redirect, render_template, request, session, abort
+from flask import Flask, flash, redirect, render_template, request, session, abort, url_for
 import os
 from flask import g
+from time import gmtime, strftime
 import sqlite3
 
 app = Flask(__name__)
@@ -52,7 +53,7 @@ def home():
     if not session.get('logged_in'):
         return render_template('login.html')
     else:
-        return render_template('list.html')
+        return render_template('home.html')
     
 @app.route('/login', methods=['POST'])
 def do_admin_login():
@@ -60,13 +61,25 @@ def do_admin_login():
         session['logged_in'] = True
     else:
         flash('wrong password!')
-    return list()
+    return home()
 
-#@app.route('/create', methods=['GET'])
-#def create():
-    
- #  return list()
+@app.route('/create', methods=['POST'])
+def create():
+    db = get_db()
+    db.execute('insert into entries (title, description) values (?, ?)',
+               [request.form['title'], request.form['desc']])
+    db.commit()
+    return redirect(url_for('list'))
 
+@app.route('/remove/<entry_title>/<entry_desc>', methods=['POST'])
+def remove(entry_title, entry_desc):
+    db = get_db()
+    db.execute('delete from entries where title=? and description=? limit 1', [entry_title, entry_desc])
+    db.commit()
+    flash('Entry ' + entry_title + ' was deleted')
+    return redirect(url_for('list'))
+
+@app.route('/list', methods=['GET'])
 def list():
     db = get_db()
     cur = db.execute('select title, description from entries order by title asc')
