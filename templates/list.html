@@ -1,14 +1,18 @@
 <html>
   <body>
+    
     <table border=2>
       <th>Title</th>
       <th>Description</th>
-      {% for i in info %}
+      {% for entry in entries %}
       <tr>
-	<td>{{ i.title }}</td>
-
+	<td>{{ entry.title }}</td>
+	<td>{{ entry.description }}</td>
       </tr>
-      {% endfor %}
+      {% else %}
+      <li><em>Unbelievable.  No entries here so far</em>
+	{% endfor %}
     </table>
+    
   </body>
 </html>
